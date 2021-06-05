@@ -1,2 +1,4 @@
-# emt_DDD
+# 
 Electronic and Mobile Commerce
+Domain Driven Design
+
