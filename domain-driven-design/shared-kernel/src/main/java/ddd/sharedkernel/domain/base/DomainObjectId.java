@@ -3,6 +3,7 @@ package ddd.sharedkernel.domain.base;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.Embeddable;
@@ -14,6 +15,7 @@ import java.util.UUID;
 @MappedSuperclass
 @Embeddable
 @Getter
+@NoArgsConstructor
 public class DomainObjectId implements Serializable {
 
     private String id;
