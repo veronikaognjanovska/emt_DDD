@@ -1,4 +1,4 @@
-package ddd.ordermanagement.domain.model;
+package ddd.usermanagement.domain.valueObjects;
 
 import ddd.sharedkernel.domain.base.DomainObjectId;
 import lombok.NonNull;
