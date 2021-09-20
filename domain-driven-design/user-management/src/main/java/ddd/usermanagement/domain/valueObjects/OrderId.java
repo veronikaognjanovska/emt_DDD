@@ -1,15 +1,17 @@
 package ddd.usermanagement.domain.valueObjects;
 
 import ddd.sharedkernel.domain.base.DomainObjectId;
-import lombok.NonNull;
 
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class OrderId extends DomainObjectId {
 
     private OrderId() {
         super(OrderId.randomId(OrderId.class).getId());
     }
 
-    public OrderId(@NonNull String uuid) {
+    public OrderId(String uuid) {
         super(uuid);
     }
 

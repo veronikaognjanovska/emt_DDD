@@ -4,12 +4,16 @@ package ddd.usermanagement.domain.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import ddd.usermanagement.domain.valueObjects.Order;
+import ddd.usermanagement.domain.valueObjects.OrderId;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
@@ -21,7 +25,6 @@ import java.util.Set;
 @NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler",
         "password",
-        "followers", "following", "faved", "rated", "watchlist",
         "accountNonExpired", "accountNonLocked", "credentialsNonExpired", "enabled"})
 public class User implements UserDetails {
 
@@ -41,11 +44,6 @@ public class User implements UserDetails {
 
     @Enumerated(value = EnumType.STRING)
     private Role role;
-
-    @OneToMany(mappedBy = "user")
-    @JsonManagedReference
-    private Set<Order> orderSet;
-
 
     public User(String username, String password, String email, LocalDateTime birthday, Role role) {
         this.username = username;

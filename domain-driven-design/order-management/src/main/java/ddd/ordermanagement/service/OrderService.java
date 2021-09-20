@@ -16,7 +16,9 @@ public interface OrderService {
 
     OrderId placeOrder(OrderForm orderForm);
 
-    List<Order> findAll();
+    List<Order> findAll(String username);
+
+    List<Order> findAllMadeOrders(String username);
 
     Optional<Order> findById(OrderId id);
 
@@ -24,5 +26,13 @@ public interface OrderService {
 
     void deleteItem(OrderId orderId, OrderItemId orderItemId) throws OrderIdNotExistException, OrderItemIdNotExistException;
 
+    Optional<Order> findByUsernameAndId(String username, OrderId id);
 
+    Optional<Order> findShoppingCart(String username);
+
+    void makeOrder(String username);
+
+    Optional<Order> addItemToSC(String username,String bookId);
+
+    Optional<Order> removeItemToSC(String username,String bookId);
 }

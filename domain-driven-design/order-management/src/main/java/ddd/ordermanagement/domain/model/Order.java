@@ -15,7 +15,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name="orders")
+@Table(name = "orders")
 @Getter
 public class Order extends AbstractEntity<OrderId> {
 
@@ -24,38 +24,58 @@ public class Order extends AbstractEntity<OrderId> {
     @Enumerated(EnumType.STRING)
     private OrderState orderState;
 
-    @Column(name="order_currency")
+    @Column(name = "order_currency")
     @Enumerated(EnumType.STRING)
     private Currency currency;
 
+    private String username;
 
-    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.EAGER)
-    private Set<OrderItem> orderItemList = new HashSet<>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private final Set<OrderItem> orderItemList = new HashSet<>();
 
     private Order() {
         super(OrderId.randomId(OrderId.class));
     }
+
     public Order(Instant now, Currency currency) {
         super(OrderId.randomId(OrderId.class));
         this.orderedOnDate = now;
         this.currency = currency;
+        this.orderState = OrderState.SHOPPING_CART;
+    }
+
+    public Order(Instant now, Currency currency, String username) {
+        super(OrderId.randomId(OrderId.class));
+        this.orderedOnDate = now;
+        this.currency = currency;
+        this.username = username;
+        this.orderState = OrderState.SHOPPING_CART;
     }
 
     public Money totalPrice() {
         return orderItemList.stream().map(OrderItem::subtotal).reduce(new Money(currency, 0), Money::add);
     }
 
+    public void changeOrderState(OrderState state) {
+        this.orderState = state;
+        this.orderedOnDate = Instant.now();
+    }
+
+    public void makeOrder() {
+        this.orderState = OrderState.RECEIVED;
+    }
+
     public OrderItem addItem(@NonNull Book book, int qty) {
-        Objects.requireNonNull(book,"Book must not be null");
+        Objects.requireNonNull(book, "Book must not be null");
         var p = book.getBookPrice();
 
-        var item  = new OrderItem(book.getId(),book.getBookPrice(),qty);
+        var item = new OrderItem(book.getId(), book.getBookPrice(), qty);
         orderItemList.add(item);
         return item;
     }
 
     public void removeItem(@NonNull OrderItemId orderItemId) {
-        Objects.requireNonNull(orderItemId,"Order Item must not be null");
-        orderItemList.removeIf(v->v.getId().equals(orderItemId));
+        Objects.requireNonNull(orderItemId, "Order Item must not be null");
+        orderItemList.removeIf(v -> v.getId().equals(orderItemId));
     }
 }

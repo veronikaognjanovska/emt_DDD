@@ -7,7 +7,6 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="domain-driven-design" />
         <module name="shared-kernel" />
         <module name="book-catalog" />
         <module name="order-management" />
