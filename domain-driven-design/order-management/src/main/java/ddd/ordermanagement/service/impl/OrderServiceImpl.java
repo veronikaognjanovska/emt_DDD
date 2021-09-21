@@ -2,15 +2,14 @@ package ddd.ordermanagement.service.impl;
 
 import ddd.ordermanagement.domain.exceptions.OrderIdNotExistException;
 import ddd.ordermanagement.domain.exceptions.OrderItemIdNotExistException;
-import ddd.ordermanagement.domain.model.Order;
-import ddd.ordermanagement.domain.model.OrderId;
-import ddd.ordermanagement.domain.model.OrderItemId;
-import ddd.ordermanagement.domain.model.OrderState;
+import ddd.ordermanagement.domain.model.*;
 import ddd.ordermanagement.domain.repository.OrderRepository;
 import ddd.ordermanagement.service.OrderService;
 import ddd.ordermanagement.service.forms.OrderForm;
 import ddd.ordermanagement.service.forms.OrderItemForm;
+import ddd.ordermanagement.service.forms.OrderItemIdForm;
 import ddd.sharedkernel.domain.events.orders.OrderItemCreated;
+import ddd.sharedkernel.domain.events.orders.OrderItemRemoved;
 import ddd.sharedkernel.domain.financial.Currency;
 import ddd.sharedkernel.infra.DomainEventPublisher;
 import lombok.AllArgsConstructor;
@@ -105,14 +104,23 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public Optional<Order> addItemToSC(String username,String bookId) {
-        // to do
+    public Optional<Order> addItemToSC(String username, OrderItemForm orderItemForm) {
+        Order order = this.findShoppingCart(username).orElseThrow(OrderIdNotExistException::new);
+        order.addItem(orderItemForm.getBook(), orderItemForm.getQuantity());
+        orderRepository.saveAndFlush(order);
+        domainEventPublisher.publish(new OrderItemCreated(orderItemForm.getBook().getId().getId(), orderItemForm.getQuantity()));
+        return Optional.of(order);
     }
 
     @Override
     @Transactional
-    public Optional<Order> removeItemToSC(String username,String bookId) {
-        // to do
+    public Optional<Order> removeItemToSC(String username, OrderItemIdForm orderItemIdForm) {
+        Order order = this.findShoppingCart(username).orElseThrow(OrderIdNotExistException::new);
+        OrderItem orderItem = order.getOrderItemList().stream().filter(item -> item.getId().getId().equals(orderItemIdForm.getOrderItemId().getId())).findFirst().orElseThrow(OrderIdNotExistException::new);
+        order.removeItem(orderItem.getId());
+        orderRepository.saveAndFlush(order);
+        domainEventPublisher.publish(new OrderItemRemoved(orderItem.getBookId().getId().toString(), orderItem.getQuantity()));
+        return Optional.of(order);
     }
 
     private Order toDomainObject(OrderForm orderForm) {

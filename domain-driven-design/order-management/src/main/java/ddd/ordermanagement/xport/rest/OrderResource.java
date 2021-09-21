@@ -3,6 +3,8 @@ package ddd.ordermanagement.xport.rest;
 import ddd.ordermanagement.domain.model.Order;
 import ddd.ordermanagement.domain.model.OrderId;
 import ddd.ordermanagement.service.OrderService;
+import ddd.ordermanagement.service.forms.OrderItemForm;
+import ddd.ordermanagement.service.forms.OrderItemIdForm;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -50,18 +52,19 @@ public class OrderResource {
         }
     }
 
-    @GetMapping("/{username}/add/{bookId}")
-    public ResponseEntity<Order> addToShoppingCartBook(@PathVariable String username, @PathVariable String bookId) {
-        return this.orderService.addItemToSC(username, bookId)
+    @PutMapping("/{username}/add")
+    public ResponseEntity<Order> addToShoppingCartBook(@PathVariable String username,
+                                                       @RequestBody OrderItemForm orderItemForm) {
+        return this.orderService.addItemToSC(username, orderItemForm)
                 .map(order -> {
                     return ResponseEntity.ok().body(order);
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/{username}/remove/{bookId}")
-    public ResponseEntity<Order> onRemoveItemFromSC(@PathVariable String username, @PathVariable String bookId) {
-        return this.orderService.removeItemToSC(username, bookId)
+    @PutMapping("/{username}/remove")
+    public ResponseEntity<Order> onRemoveItemFromSC(@PathVariable String username, @RequestBody OrderItemIdForm orderItemIdForm) {
+        return this.orderService.removeItemToSC(username, orderItemIdForm)
                 .map(order -> {
                     return ResponseEntity.ok().body(order);
                 })

@@ -8,6 +8,7 @@ import ddd.ordermanagement.domain.model.OrderId;
 import ddd.ordermanagement.domain.model.OrderItemId;
 import ddd.ordermanagement.service.forms.OrderForm;
 import ddd.ordermanagement.service.forms.OrderItemForm;
+import ddd.ordermanagement.service.forms.OrderItemIdForm;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +33,7 @@ public interface OrderService {
 
     void makeOrder(String username);
 
-    Optional<Order> addItemToSC(String username,String bookId);
+    Optional<Order> addItemToSC(String username, OrderItemForm orderItemForm);
 
-    Optional<Order> removeItemToSC(String username,String bookId);
+    Optional<Order> removeItemToSC(String username, OrderItemIdForm orderItemIdForm);
 }
