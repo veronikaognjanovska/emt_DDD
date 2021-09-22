@@ -6,6 +6,7 @@ import ddd.ordermanagement.domain.exceptions.OrderItemIdNotExistException;
 import ddd.ordermanagement.domain.model.Order;
 import ddd.ordermanagement.domain.model.OrderId;
 import ddd.ordermanagement.domain.model.OrderItemId;
+import ddd.ordermanagement.service.forms.OrderAddressForm;
 import ddd.ordermanagement.service.forms.OrderForm;
 import ddd.ordermanagement.service.forms.OrderItemForm;
 import ddd.ordermanagement.service.forms.OrderItemIdForm;
@@ -31,7 +32,7 @@ public interface OrderService {
 
     Optional<Order> findShoppingCart(String username);
 
-    void makeOrder(String username);
+    void makeOrder(String username, OrderAddressForm orderAddressForm);
 
     Optional<Order> addItemToSC(String username, OrderItemForm orderItemForm);
 

@@ -5,6 +5,7 @@ import ddd.ordermanagement.domain.exceptions.OrderItemIdNotExistException;
 import ddd.ordermanagement.domain.model.*;
 import ddd.ordermanagement.domain.repository.OrderRepository;
 import ddd.ordermanagement.service.OrderService;
+import ddd.ordermanagement.service.forms.OrderAddressForm;
 import ddd.ordermanagement.service.forms.OrderForm;
 import ddd.ordermanagement.service.forms.OrderItemForm;
 import ddd.ordermanagement.service.forms.OrderItemIdForm;
@@ -73,11 +74,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public void makeOrder(String username) {
+    public void makeOrder(String username, OrderAddressForm orderAddressForm) {
         Optional<Order> order = this.findShoppingCart(username);
         if (order.isPresent()) {
             Order o = order.get();
-            o.makeOrder();
+            o.makeOrder(orderAddressForm.getAddress());
             orderRepository.saveAndFlush(o);
             this.createShoppingCart(username);
         }
@@ -115,7 +116,7 @@ public class OrderServiceImpl implements OrderService {
         OrderItem orderItem = order.getOrderItemList().stream().filter(item -> item.getId().getId().equals(orderItemIdForm.getOrderItemId().getId())).findFirst().orElseThrow(OrderIdNotExistException::new);
         order.removeItem(orderItem.getId());
         orderRepository.saveAndFlush(order);
-        domainEventPublisher.publish(new OrderItemRemoved(orderItem.getBookId().getId().toString(), orderItem.getQuantity()));
+        domainEventPublisher.publish(new OrderItemRemoved(orderItem.getBookId().getId(), orderItem.getQuantity()));
         return Optional.of(order);
     }
 

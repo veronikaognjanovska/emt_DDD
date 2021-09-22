@@ -3,6 +3,7 @@ package ddd.ordermanagement.xport.rest;
 import ddd.ordermanagement.domain.model.Order;
 import ddd.ordermanagement.domain.model.OrderId;
 import ddd.ordermanagement.service.OrderService;
+import ddd.ordermanagement.service.forms.OrderAddressForm;
 import ddd.ordermanagement.service.forms.OrderItemForm;
 import ddd.ordermanagement.service.forms.OrderItemIdForm;
 import lombok.AllArgsConstructor;
@@ -42,10 +43,11 @@ public class OrderResource {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/{username}/makeorder")
-    public ResponseEntity<Order> makeOrder(@PathVariable String username) {
+    @PutMapping("/{username}/makeorder")
+    public ResponseEntity<Order> makeOrder(@PathVariable String username,
+                                           @RequestBody OrderAddressForm orderAddressForm) {
         try {
-            this.orderService.makeOrder(username);
+            this.orderService.makeOrder(username, orderAddressForm);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.notFound().build();

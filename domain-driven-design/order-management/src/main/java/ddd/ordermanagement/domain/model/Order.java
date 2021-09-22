@@ -19,19 +19,16 @@ import java.util.Set;
 @Getter
 public class Order extends AbstractEntity<OrderId> {
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private final Set<OrderItem> orderItemList = new HashSet<>();
     private Instant orderedOnDate;
-
     @Enumerated(EnumType.STRING)
     private OrderState orderState;
-
     @Column(name = "order_currency")
     @Enumerated(EnumType.STRING)
     private Currency currency;
-
     private String username;
-
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private final Set<OrderItem> orderItemList = new HashSet<>();
+    private String address;
 
     private Order() {
         super(OrderId.randomId(OrderId.class));
@@ -49,6 +46,7 @@ public class Order extends AbstractEntity<OrderId> {
         this.orderedOnDate = now;
         this.currency = currency;
         this.username = username;
+        this.address = "";
         this.orderState = OrderState.SHOPPING_CART;
     }
 
@@ -61,8 +59,9 @@ public class Order extends AbstractEntity<OrderId> {
         this.orderedOnDate = Instant.now();
     }
 
-    public void makeOrder() {
+    public void makeOrder(String address) {
         this.orderState = OrderState.RECEIVED;
+        this.address = address;
     }
 
     public OrderItem addItem(@NonNull Book book, int qty) {
