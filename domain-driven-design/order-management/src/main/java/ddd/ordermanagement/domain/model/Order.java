@@ -1,6 +1,7 @@
 package ddd.ordermanagement.domain.model;
 
 
+import ddd.ordermanagement.domain.exceptions.BookCanNotBeAddedToShoppingCartException;
 import ddd.ordermanagement.domain.valueObjects.Book;
 import ddd.sharedkernel.domain.base.AbstractEntity;
 import ddd.sharedkernel.domain.financial.Currency;
@@ -67,7 +68,9 @@ public class Order extends AbstractEntity<OrderId> {
     public OrderItem addItem(@NonNull Book book, int qty) {
         Objects.requireNonNull(book, "Book must not be null");
         var p = book.getBookPrice();
-
+        if (book.getBookQuantity() - qty < 0) {
+            throw new BookCanNotBeAddedToShoppingCartException();
+        }
         var item = new OrderItem(book.getId(), book.getBookPrice(), qty);
         orderItemList.add(item);
         return item;
