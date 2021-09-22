@@ -26,7 +26,6 @@ public class BookEventListener {
         } catch (Exception e) {
             System.out.println(e);
         }
-
     }
 
     @KafkaListener(topics = TopicHolder.TOPIC_ORDER_ITEM_REMOVED, groupId = "BookCatalog")

@@ -25,6 +25,14 @@ public class Book implements ValueObject {
         this.bookQuantity = 0;
     }
 
+    public Book(BookId id) {
+        this.id=id;
+        this.bookTitle= "";
+        this.bookAuthor= "";
+        this.bookPrice = Money.valueOf(Currency.MKD,0);
+        this.bookQuantity = 0;
+    }
+
     @JsonCreator
     public Book(@JsonProperty("id") BookId id,
                 @JsonProperty("bookTitle") String bookTitle,

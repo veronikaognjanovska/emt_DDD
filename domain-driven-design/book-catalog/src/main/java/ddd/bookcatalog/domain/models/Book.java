@@ -51,4 +51,21 @@ public class Book extends AbstractEntity<BookId> {
     public void removeBookQuantity(int qty) {
         this.bookQuantity -= qty;
     }
+
+    public void changeBookTitle(String title) {
+        this.bookTitle = title;
+    }
+
+    public void changeBookAuthor(String author) {
+        this.bookAuthor = author;
+    }
+
+    public void changeBookPrice(Money m) {
+        this.bookPrice = m;
+    }
+
+    public void changeBookQuantity(int qty) {
+        this.bookQuantity = qty;
+    }
+
 }

@@ -8,6 +8,5 @@ public class BookForm {
     private String bookTitle;
     private String bookAuthor;
     private Money price;
-    private int sales;
-
+    private int quantity;
 }

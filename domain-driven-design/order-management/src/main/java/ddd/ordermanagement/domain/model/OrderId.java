@@ -12,4 +12,9 @@ public class OrderId extends DomainObjectId {
     public OrderId(@NonNull String uuid) {
         super(uuid);
     }
+
+    public static OrderId of(String uuid) {
+        OrderId p = new OrderId(uuid);
+        return p;
+    }
 }

@@ -1,5 +1,5 @@
 package ddd.ordermanagement.domain.model;
 
 public enum OrderState {
-    RECEIVED, PROCESSING, CANCELLED, PROCESSED
+    SHOPPING_CART, RECEIVED, PROCESSING, CANCELLED, PROCESSED
 }
