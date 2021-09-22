@@ -79,11 +79,7 @@ public class OrderServiceImpl implements OrderService {
             Order o = order.get();
             o.makeOrder();
             orderRepository.saveAndFlush(o);
-            // make new empty Shopping Cart -  should not be done this way
-            OrderForm orderForm = new OrderForm();
-            orderForm.setCurrency(Currency.MKD);
-            orderForm.setItems(Collections.emptyList());
-            var newOrder = orderRepository.saveAndFlush(toDomainObject(orderForm, username));
+            this.createShoppingCart(username);
         }
     }
 
@@ -121,6 +117,15 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.saveAndFlush(order);
         domainEventPublisher.publish(new OrderItemRemoved(orderItem.getBookId().getId().toString(), orderItem.getQuantity()));
         return Optional.of(order);
+    }
+
+    @Override
+    @Transactional
+    public Order createShoppingCart(String username) {
+        OrderForm orderForm = new OrderForm();
+        orderForm.setCurrency(Currency.MKD);
+        orderForm.setItems(Collections.emptyList());
+        return orderRepository.saveAndFlush(toDomainObject(orderForm, username));
     }
 
     private Order toDomainObject(OrderForm orderForm) {

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ddd.sharedkernel.domain.events.orders.OrderItemCreated;
 import ddd.sharedkernel.domain.events.orders.OrderItemRemoved;
+import ddd.sharedkernel.domain.events.orders.UserRegistered;
 import lombok.Getter;
 
 import java.time.Instant;
@@ -42,6 +43,9 @@ public class DomainEvent {
             } else if (this instanceof OrderItemRemoved) {
                 output = "{\"topic\":\"" + this.topic + "\",\"occurredOn\":\"" + this.occurredOn +
                         "\",\"bookId\":\"" + ((OrderItemRemoved) this).getBookId() + "\",\"quantity\":\"" + ((OrderItemRemoved) this).getQuantity() + "\"}";
+            } else if (this instanceof UserRegistered) {
+                output = "{\"topic\":\"" + this.topic + "\",\"occurredOn\":\"" + this.occurredOn +
+                        "\",\"username\":\"" + ((UserRegistered) this).getUsername() + "\"}";
             }
 //            output = objectMapper.writeValueAsString(this);
 //        } catch (JsonProcessingException e) {

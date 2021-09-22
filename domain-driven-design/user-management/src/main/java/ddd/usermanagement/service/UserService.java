@@ -1,7 +1,10 @@
 package ddd.usermanagement.service;
 
 
+import ddd.sharedkernel.domain.events.orders.OrderItemCreated;
+import ddd.sharedkernel.domain.events.orders.UserRegistered;
 import ddd.sharedkernel.domain.helpers.DateCustom;
+import ddd.sharedkernel.infra.DomainEventPublisher;
 import ddd.usermanagement.domain.exceptions.InvalidArgumentsException;
 import ddd.usermanagement.domain.exceptions.PasswordsDoNotMatchException;
 import ddd.usermanagement.domain.exceptions.UsernameAlreadyExistsException;
@@ -27,6 +30,12 @@ public class UserService implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    private final DomainEventPublisher domainEventPublisher;
+
+    public UserService(DomainEventPublisher domainEventPublisher) {
+        this.domainEventPublisher = domainEventPublisher;
+    }
+
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
         return this.userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
@@ -45,7 +54,8 @@ public class UserService implements UserDetailsService {
         User user = new User(dto.getUsername(), passwordEncoder.encode(dto.getPassword()), dto.getEmail(),
                 DateCustom.getLocalDateTimeFromDateStringDateDate(dto.getBirthday()), Role.ROLE_USER);
         this.userRepository.save(user);
-
+    UserRegistered u = new UserRegistered(user.getUsername());
+        domainEventPublisher.publish(u);
         return Optional.of(this.userRepository.save(user));
     }
 

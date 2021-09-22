@@ -36,4 +36,6 @@ public interface OrderService {
     Optional<Order> addItemToSC(String username, OrderItemForm orderItemForm);
 
     Optional<Order> removeItemToSC(String username, OrderItemIdForm orderItemIdForm);
+
+    Order createShoppingCart(String username);
 }
