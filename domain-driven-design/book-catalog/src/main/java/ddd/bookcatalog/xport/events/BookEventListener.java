@@ -12,12 +12,20 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
+/**
+ * Listener endpoint for the Book Catalog Module
+ */
 @Service
 @AllArgsConstructor
 public class BookEventListener {
 
     private final BookService bookService;
 
+    /**
+     * Method that listens on the TOPIC_ORDER_ITEM_CREATED topic
+     *
+     * @param jsonMessage - event message
+     */
     @KafkaListener(topics = TopicHolder.TOPIC_ORDER_ITEM_CREATED, groupId = "BookCatalog")
     public void consumeOrderItemCreatedEvent(@Payload(required = false) String jsonMessage) {
         try {
@@ -28,6 +36,11 @@ public class BookEventListener {
         }
     }
 
+    /**
+     * Method that listens on the TOPIC_ORDER_ITEM_REMOVED topic
+     *
+     * @param jsonMessage - event message
+     */
     @KafkaListener(topics = TopicHolder.TOPIC_ORDER_ITEM_REMOVED, groupId = "BookCatalog")
     public void consumeOrderItemRemovedEvent(@Payload(required = false) String jsonMessage) {
         try {

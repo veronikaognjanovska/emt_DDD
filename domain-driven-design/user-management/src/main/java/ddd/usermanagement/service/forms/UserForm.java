@@ -4,6 +4,9 @@ import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * UserForm Object for the data received though the API
+ */
 @Data
 public class UserForm {
 
@@ -21,7 +24,7 @@ public class UserForm {
         this.password = password;
         this.email = email;
         this.birthday = birthday;
-        this.repeatPassword=null;
+        this.repeatPassword = null;
     }
 
 }

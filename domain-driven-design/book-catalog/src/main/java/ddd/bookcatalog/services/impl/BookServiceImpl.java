@@ -7,7 +7,6 @@ import ddd.bookcatalog.domain.models.BookDto;
 import ddd.bookcatalog.domain.models.BookId;
 import ddd.bookcatalog.domain.repository.BookRepository;
 import ddd.bookcatalog.services.BookService;
-import ddd.bookcatalog.services.form.BookForm;
 import ddd.sharedkernel.domain.financial.Money;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Implementation of BookService Interface
+ */
 @Service
 @Transactional
 @AllArgsConstructor
@@ -31,7 +33,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public Optional<Book> createBook(BookDto form) {
         Book p = Book.build(form.getBookTitle(), form.getBookAuthor(),
-                Money.valueOf(form.getCurrency(),form.getAmount()), form.getQuantity());
+                Money.valueOf(form.getCurrency(), form.getAmount()), form.getQuantity());
         bookRepository.save(p);
         return Optional.of(p);
     }
@@ -68,7 +70,7 @@ public class BookServiceImpl implements BookService {
         Book book = this.findById(book_id).orElseThrow(() -> new BookNotFoundException());
         book.changeBookTitle(bookDto.getBookTitle());
         book.changeBookAuthor(bookDto.getBookAuthor());
-        book.changeBookPrice(Money.valueOf(bookDto.getCurrency(),bookDto.getAmount()));
+        book.changeBookPrice(Money.valueOf(bookDto.getCurrency(), bookDto.getAmount()));
         book.changeBookQuantity(bookDto.getQuantity());
         return Optional.of(this.bookRepository.save(book));
     }

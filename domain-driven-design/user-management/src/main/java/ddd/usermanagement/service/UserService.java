@@ -1,7 +1,6 @@
 package ddd.usermanagement.service;
 
 
-import ddd.sharedkernel.domain.events.orders.OrderItemCreated;
 import ddd.sharedkernel.domain.events.orders.UserRegistered;
 import ddd.sharedkernel.domain.helpers.DateCustom;
 import ddd.sharedkernel.infra.DomainEventPublisher;
@@ -24,23 +23,34 @@ import java.util.Optional;
 @Service
 public class UserService implements UserDetailsService {
 
+    private final DomainEventPublisher domainEventPublisher;
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    private final DomainEventPublisher domainEventPublisher;
 
     public UserService(DomainEventPublisher domainEventPublisher) {
         this.domainEventPublisher = domainEventPublisher;
     }
 
+    /**
+     * Method that returns the user with the given username
+     *
+     * @param username
+     * @return User - the user with the given username
+     */
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
         return this.userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
     }
 
+    /**
+     * Method that saves/registers a new user and returns the same
+     * Publishes an event when the user is register - UserRegistered DomainEvent
+     *
+     * @param dto - object containing the data for saving/registering the new user
+     * @return Optional<User>
+     */
     @Transactional
     public Optional<User> save(UserForm dto) {
         if (dto.getUsername() == null || dto.getPassword() == null || dto.getRepeatPassword() == null ||
@@ -54,7 +64,7 @@ public class UserService implements UserDetailsService {
         User user = new User(dto.getUsername(), passwordEncoder.encode(dto.getPassword()), dto.getEmail(),
                 DateCustom.getLocalDateTimeFromDateStringDateDate(dto.getBirthday()), Role.ROLE_USER);
         this.userRepository.save(user);
-    UserRegistered u = new UserRegistered(user.getUsername());
+        UserRegistered u = new UserRegistered(user.getUsername());
         domainEventPublisher.publish(u);
         return Optional.of(this.userRepository.save(user));
     }

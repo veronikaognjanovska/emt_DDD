@@ -7,6 +7,9 @@ import ddd.sharedkernel.domain.config.TopicHolder;
 import ddd.sharedkernel.domain.events.DomainEvent;
 import lombok.Getter;
 
+/**
+ * Domain Event for notifying a OrderItem being removed
+ */
 @Getter
 public class OrderItemRemoved extends DomainEvent {
 

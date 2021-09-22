@@ -32,6 +32,10 @@ public class DomainEvent {
         return objectMapper.readValue(json, eventClass);
     }
 
+    /**
+     * Method for mapping the Event to JSON
+     * @return String - JSON object
+     */
     @JsonIgnore
     public String toJson() {
 //        ObjectMapper objectMapper = new ObjectMapper();

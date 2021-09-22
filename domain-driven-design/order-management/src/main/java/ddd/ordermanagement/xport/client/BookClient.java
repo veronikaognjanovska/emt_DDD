@@ -13,6 +13,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Service for sending API calls to Book Catalog
+ */
 @Service
 public class BookClient {
 
@@ -33,7 +36,8 @@ public class BookClient {
     public List<Book> findAll() {
         try {
             return restTemplate.exchange(uri().path("/api/book").build().toUri(),
-                    HttpMethod.GET,null, new ParameterizedTypeReference<List<Book>>() {}
+                    HttpMethod.GET, null, new ParameterizedTypeReference<List<Book>>() {
+                    }
             ).getBody();
         } catch (Exception e) {
             return Collections.emptyList();

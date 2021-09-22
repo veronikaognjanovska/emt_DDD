@@ -26,6 +26,12 @@ public class UserResource {
         }
     }
 
+    /**
+     * Method that returns the user with the given username
+     *
+     * @param username
+     * @return ResponseEntity<User> - the user with the given username
+     */
     @GetMapping("/{username}")
     ResponseEntity<User> details(@PathVariable String username) {
         try {

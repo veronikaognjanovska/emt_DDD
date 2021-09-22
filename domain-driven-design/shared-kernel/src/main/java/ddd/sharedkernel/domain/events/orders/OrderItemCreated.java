@@ -7,6 +7,9 @@ import ddd.sharedkernel.domain.config.TopicHolder;
 import ddd.sharedkernel.domain.events.DomainEvent;
 import lombok.Getter;
 
+/**
+ * Domain Event for notifying a new OrderItem being created
+ */
 @Getter
 public class OrderItemCreated extends DomainEvent {
 

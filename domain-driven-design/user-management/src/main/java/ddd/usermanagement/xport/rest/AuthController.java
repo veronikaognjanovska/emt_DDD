@@ -35,6 +35,12 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
+    /**
+     * Method for logging a user
+     *
+     * @param userDto - object containing the data for loging the user
+     * @return ResponseEntity
+     */
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody UserForm userDto) {
 
@@ -53,6 +59,12 @@ public class AuthController {
                 role));
     }
 
+    /**
+     * Method for registering a new user
+     *
+     * @param userDto - object containing the data for registering the new user
+     * @return ResponseEntity
+     */
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody UserForm userDto) {
         try {

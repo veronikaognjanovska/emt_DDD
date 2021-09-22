@@ -6,6 +6,9 @@ import ddd.sharedkernel.domain.config.TopicHolder;
 import ddd.sharedkernel.domain.events.DomainEvent;
 import lombok.Getter;
 
+/**
+ * Domain Event for notifying a new User being registered
+ */
 @Getter
 public class UserRegistered extends DomainEvent {
 
